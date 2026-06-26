@@ -5,3 +5,4 @@ numpy
 scipy
 joblib
 scikit-learn
+category-encoders==2.6.3
