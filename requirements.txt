@@ -6,3 +6,4 @@ scipy
 joblib
 scikit-learn
 category-encoders==2.6.3
+gdown==5.2.0
