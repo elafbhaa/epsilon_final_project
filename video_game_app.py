@@ -71,7 +71,7 @@ st.set_page_config(
     page_title="Video Game Sales Dashboard",
     layout="wide"
 )
-st.title('Video Project')
+
 
 
 # Load Data
@@ -843,9 +843,8 @@ elif page == "Analysis":
 elif page == "Predictions":
 
     st.title("🎮 Video Game Sales Prediction")
-    
     st.sidebar.markdown("### Game Specifications")
-    
+
     # --- Sanitize categorical columns ---
     df["genre"] = df["genre"].fillna("Unknown").astype(str)
     df["platform"] = df["platform"].fillna("Unknown").astype(str)
@@ -867,15 +866,20 @@ elif page == "Predictions":
 
     st.markdown("### 📋 Input Summary")
     st.table(input_df)
-    
+
     if st.button("Predict Global Sales"):
         try:
             # Load the full pipeline (preprocessing + model)
             pipeline = joblib.load("video_game_model.pkl")
-            
-            # Run prediction
+
+            # Ensure all expected columns exist
+            expected_cols = pipeline.feature_names_in_
+            input_df = input_df.reindex(columns=expected_cols, fill_value=0)
+
+            # Predict
             prediction = pipeline.predict(input_df)
-            st.success(f"🌍 Predicted Global Sales: {prediction[0]:.2f} million units")
+            st.success(f"Predicted Global Sales: {prediction[0]:.2f} million")
+
         except Exception as e:
             st.error(f"Prediction Error: {e}")
 
